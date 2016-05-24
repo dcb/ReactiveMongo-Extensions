@@ -4,9 +4,9 @@ name := "reactivemongo-extensions"
 
 lazy val commonSettings = Seq(
   organization := "org.reactivemongo",
-  version := "0.11.10",
-  scalaVersion  := "2.11.7",
-  crossScalaVersions  := Seq("2.11.7"),
+  version := "0.12.0-SNAPSHOT",
+  scalaVersion  := "2.11.8",
+  crossScalaVersions  := Seq("2.11.8"),
   scalacOptions := Seq(
     "-unchecked",
     "-deprecation",
@@ -16,7 +16,7 @@ lazy val commonSettings = Seq(
     "-language:postfixOps",
     "-language:implicitConversions",
     "-language:existentials",
-    "-target:jvm-1.6"),
+    "-target:jvm-1.8"),
   resolvers ++= Seq(
     "Typesafe repository releases" at "http://repo.typesafe.com/typesafe/releases/",
     "Sonatype snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/"),
@@ -41,7 +41,7 @@ lazy val publishSettings = Seq(
       Some("releases"  at nexus + "service/local/staging/deploy/maven2")
   },
   pomExtra := (
-    <url>http://github.com/fehmicansaglam/reactivemongo-extensions</url>
+    <url>http://github.com/dcb/reactivemongo-extensions</url>
     <licenses>
       <license>
         <name>Apache 2</name>
@@ -50,10 +50,15 @@ lazy val publishSettings = Seq(
       </license>
     </licenses>
     <scm>
-      <url>git@github.com:fehmicansaglam/reactivemongo-extensions.git</url>
-      <connection>scm:git@github.com:fehmicansaglam/reactivemongo-extensions.git</connection>
+      <url>git@github.com:dcb/reactivemongo-extensions.git</url>
+      <connection>scm:git@github.com:dcb/reactivemongo-extensions.git</connection>
     </scm>
     <developers>
+      <developer>
+        <id>dcb</id>
+        <name>Bogdan Dumitru</name>
+        <url>http://github.com/dcb</url>
+      </developer>
       <developer>
         <id>fehmicansaglam</id>
         <name>Fehmi Can Saglam</name>
@@ -67,7 +72,7 @@ lazy val publishSettings = Seq(
     </developers>))
 
 val travisSettings = Seq(
-  Travis.travisSnapshotBranches := Seq("0.10.x", "0.10.5.akka23-SNAPSHOT"),
+  Travis.travisSnapshotBranches := Seq("0.12.x", "0.12.0-SNAPSHOT"),
   commands += Travis.travisCommand
 )
 
