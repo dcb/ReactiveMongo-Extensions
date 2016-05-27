@@ -1,13 +1,14 @@
+Note: The original project is not maintained anymore, but not all the functionality has been migrated into the driver. Particularly the DAO, which I like and I don't feel like reinventing the wheel, so I've updated the dependencies to play 2.5.3 and [reactivemongo 0.12-SNAPSHOT](http://reactivemongo.org/releases/0.12/documentation/release-details.html). At this point there is no change in functionality, the only change is the usage of the new database resolution by updating the code to the new recommended `connection.database(..)` instead of the former `connection(..)`.
+
+To use it in your projects just clone the repository and `publish-local`.
+
+
 # ReactiveMongo Extensions
 
 The goal of *ReactiveMongo Extensions* is to provide all the necessary tools for ReactiveMongo other than the core functionality.
 
 Here is a complete example using Play 2.2, ReactiveMongo Extensions and Flight.js https://github.com/mertkavi/play-reactivemongo-extensions-sample
 
-[![Build Status](https://travis-ci.org/ReactiveMongo/ReactiveMongo-Extensions.svg?branch=0.10.x)](https://travis-ci.org/ReactiveMongo/ReactiveMongo-Extensions)
-![Progress](http://progressed.io/bar/70?title=stable)
-
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.reactivemongo/reactivemongo-extensions-core_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.reactivemongo/reactivemongo-extensions-core_2.11/)
 
 ## Introduction
 
