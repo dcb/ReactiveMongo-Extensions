@@ -22,12 +22,13 @@ import scala.concurrent.duration._
 import reactivemongo.bson._
 import reactivemongo.api.{DB, DefaultDB, QueryOpts, ReadPreference}
 import reactivemongo.api.indexes.Index
-import reactivemongo.api.commands.{GetLastError, WriteResult}
+import reactivemongo.api.commands.{DefaultWriteResult, GetLastError, WriteResult}
 import reactivemongo.api.collections.bson.BSONCollection
 import reactivemongo.extensions.dsl.BsonDsl._
 import reactivemongo.play.iteratees.cursorProducer
 import play.api.libs.iteratee.{Enumerator, Iteratee}
 import Handlers._
+import reactivemongo.bson.exceptions.DocumentKeyNotFound
 
 /**
  * A DAO implementation operates on BSONCollection using BSONDocument.
@@ -171,6 +172,18 @@ abstract class BsonDao[Model, ID](db: => Future[DefaultDB], collectionName: Stri
         mappedDocuments.foreach(lifeCycle.postPersist)
         result.n
       })
+  }
+
+  def save(model: Model, writeConcern: GetLastError = defaultWriteConcern)(implicit ec: ExecutionContext): Future[WriteResult] = {
+    val writer = implicitly[BSONDocumentWriter[Model]]
+    val mappedModel = lifeCycle.prePersist(model)
+    val bson = writer.write(mappedModel)
+    bson.get("_id").map(id =>
+      collection.flatMap(_.update($id(id), bson -- "_id", writeConcern, true).map { writeResult =>
+        lifeCycle.postPersist(mappedModel)
+        writeResult
+      })
+    ).getOrElse(Future.successful(DefaultWriteResult(false, 0, Seq(), None, None, Some("Missing document _id"))))
   }
 
   def update[U: BSONDocumentWriter](

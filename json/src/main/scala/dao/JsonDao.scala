@@ -21,7 +21,7 @@ import scala.concurrent.{ Await, ExecutionContext, Future }
 import scala.concurrent.duration._
 import reactivemongo.api.{ DB, DefaultDB, QueryOpts, ReadPreference }
 import reactivemongo.api.indexes.Index
-import reactivemongo.api.commands.{ GetLastError, WriteResult }
+import reactivemongo.api.commands.{ DefaultWriteResult, GetLastError, WriteResult }
 import reactivemongo.extensions.dao.{ Dao, LifeCycle, ReflexiveLifeCycle }
 import reactivemongo.extensions.json.dsl.JsonDsl._
 import reactivemongo.play.iteratees.cursorProducer
@@ -181,6 +181,18 @@ abstract class JsonDao[Model: OFormat, ID: Writes](db: => Future[DefaultDB], col
         result.n
       }
     )
+  }
+
+  def save(model: Model, writeConcern: GetLastError = defaultWriteConcern)(implicit ec: ExecutionContext): Future[WriteResult] = {
+    val writer = implicitly[OWrites[Model]]
+    val mappedModel = lifeCycle.prePersist(model)
+    val json = writer.writes(mappedModel)
+    (json \ "_id").toOption.map(id =>
+      collection.flatMap(_.update($id(id), json - "_id", writeConcern, true).map { writeResult =>
+        lifeCycle.postPersist(mappedModel)
+        writeResult
+      })
+    ).getOrElse(Future.successful(DefaultWriteResult(false, 0, Seq(), None, None, Some("Missing document _id"))))
   }
 
   def update[U: OWrites](

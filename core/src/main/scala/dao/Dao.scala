@@ -195,6 +195,9 @@ abstract class Dao[C <: Collection: CollectionProducer, Structure, Model, ID, Wr
   /** Removes the document with the given ID. */
   def removeById(id: ID, writeConcern: GetLastError)(implicit ec: ExecutionContext): Future[WriteResult]
 
+  /** Persists the given model in the collection. If it doesn't exist it's created, otherwise updated. */
+  def save(model: Model, writeConcern: GetLastError)(implicit ec: ExecutionContext): Future[WriteResult]
+
   /**
    * Updates the documents matching the given selector.
    *

@@ -1,4 +1,7 @@
-Note: The original project is not maintained anymore, but not all the functionality has been migrated into the driver. Particularly the DAO, which I like and I don't feel like reinventing the wheel, so I've updated the dependencies to play 2.5.3 and [reactivemongo 0.12-SNAPSHOT](http://reactivemongo.org/releases/0.12/documentation/release-details.html). At this point there is no change in functionality, the only change is the usage of the new database resolution by updating the code to the new recommended `connection.database(..)` instead of the former `connection(..)`.
+Note: The original project is not maintained anymore, but not all the functionality has been migrated into the driver.
+Particularly the DAO, which I like and I don't feel like reinventing the wheel, so I've updated the dependencies to play 2.5.3 and [reactivemongo 0.12-SNAPSHOT](http://reactivemongo.org/releases/0.12/documentation/release-details.html).
+At this point there is no change in functionality, the only change is the usage of the new database resolution by updating the code to the new recommended `connection.database(..)` instead of the former `connection(..)`.
+- Added save method in the DAO
 
 To use it in your projects just clone the repository and `publish-local`.
 
